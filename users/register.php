@@ -8,8 +8,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $last_name = trim($_POST['last_name']);
     $email = trim($_POST['email']);
     $cell_number = trim($_POST['cell_number']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $role = isset($_POST['role']) ? $_POST['role'] : 'guest';
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+    $role = 'user'; // Default role
+
+    // Password confirmation check
+    if ($password !== $confirm_password) {
+        echo "<script>alert('Passwords do not match!'); window.history.back();</script>";
+        exit();
+    }
+
+    $password_hashed = password_hash($password, PASSWORD_DEFAULT);
 
     // Validate Cell Number (Must start with 09 & be 11 digits)
     if (!preg_match('/^09\d{9}$/', $cell_number)) {
@@ -30,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES (?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $username, $full_name, $email, $cell_number, $password, $role);
+    $stmt->bind_param("ssssss", $username, $full_name, $email, $cell_number, $password_hashed, $role);
 
     if ($stmt->execute()) {
         echo "<script>alert('Registration successful! Please log in.'); window.location='login.php';</script>";
@@ -56,16 +65,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             height: 100vh;
             margin: 0;
         }
+        header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 125px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color:white;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            z-index: 1000;
+        }
+        nav{
+            position:fixed;
+            left: 125px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        body,section{
+    
+            width: 100vw;
+            height: 100vh;
+            background: url('/img/background/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .logo-container {
+            background: #FFFFFF;
+            width: 60px;
+            height: 60px;
+            border: 2px solidrgb(13, 13, 14);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+        }
         .register-container {
-            background: white;
+            position: absolute;
+            top: 17%;
+            left: 37%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            color:white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 500px;
         }
+        h1 {
+            color: #343a40;
+            padding: 0px;
+            font-size: 24px;
+            font-weight: bold;
+            align-self: center;
+            text-align: center;
+        }
+        p {
+            color:rgb(255, 255, 255);
+            font-size: 28px;
+        }
         h2 {
             text-align: center;
-            color: #333;
+            color: white;
         }
         .form-group {
             margin-bottom: 15px;
@@ -76,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: block;
             margin-bottom: 5px;
         }
-        input, select {
+        input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -110,7 +174,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
-
+<header>
+        <nav>
+            <div class="logo-container">
+                <h1>XYZ</h1>
+            </div>
+            <p>Hotel Reservations</p>
+        </nav>
+    </header>
+    <section id="content-section">
 <div class="register-container">
     <h2>Register</h2>
     <form method="post">
@@ -141,7 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="form-group">
             <label for="cell_number">Cell Number</label>
-            <input type="text" name="cell_number" placeholder="09XXXXXXXXX" pattern="09[0-9]{9}" required>
+            <input type="text" name="cell_number" placeholder="09XXXXXXXXX" pattern="09[0-9]{9}" maxlength="11" required>
         </div>
 
         <div class="form-group">
@@ -150,20 +222,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="form-group">
-            <label for="role">Select Role</label>
-            <select name="role" required>
-                <option value="user">Guest</option>
-                <option value="receptionist">Receptionist</option>
-            </select>
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
         </div>
 
         <button type="submit">Register</button>
 
         <div class="login-link">
-            Already have an account? <a href="login.php">Login here</a>
+            Already have an account? <a href="users/login.php">Login here</a>
         </div>
     </form>
 </div>
+</section>
 
 </body>
 </html>

@@ -29,24 +29,52 @@ $reservations = $stmt->get_result();
     <title>Guest Dashboard</title>
     <style>
         body {
+            
+            height: 100%;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             text-align: center;
             margin: 40px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
+        section {
+            display: flex;
+            flex-direction: row;
+            max-height: auto;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+       
         h2 {
             color: #343a40;
         }
         .dashboard-container {
-            width: 80%;
+            width: 100%;
+            height: 800px;
             margin: auto;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
+        .left-section {
+            width: 20%;
+            height: 800px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
         table {
             width: 100%;
+            height:auto;
             margin-top: 10px;
             border-collapse: collapse;
             background: white;
@@ -92,37 +120,46 @@ $reservations = $stmt->get_result();
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h2>🏨 Welcome to XYZ Hotel Reservations!</h2>
 
-        <h3>📌 Available Rooms</h3>
-        <a href="available_rooms.php" class="btn btn-primary">View and Reserve a Room</a>
-
-        <h3>📌 My Reservations</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Room Number</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $reservations->fetch_assoc()) { ?>
+    <section>
+        <div class="left-section">
+            <h2>👤 Hello, <?= htmlspecialchars($username); ?>!</h2>
+            <p>Welcome to your dashboard. Here you can view and manage your reservations.</p>
+            <br>
+            <a href="../users/logout.php" class="btn btn-danger">Logout</a>
+        </div>
+        <div class="dashboard-container">
+            <h2>🏨 Welcome to XYZ Hotel Reservations!</h2>
+    
+            <h3>📌 Available Rooms</h3>
+            <a href="available_rooms.php" class="btn btn-primary">View and Reserve a Room</a>
+    
+            <h3>📌 My Reservations</h3>
+            <table>
+                <thead>
                     <tr>
-                        <td><?= $row['room_number']; ?></td>
-                        <td><?= $row['type']; ?></td>
-                        <td>₱<?= number_format($row['price'], 2); ?></td>
-                        <td style="color: <?= $row['status'] == 'confirmed' ? 'green' : 'red'; ?>; font-weight: bold;">
-                            <?= ucfirst($row['status']); ?>
-                        </td>
+                        <th>Room Number</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Status</th>
                     </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-        <br>
-        <a href="../users/logout.php" class="btn btn-danger">Logout</a>
-    </div>
+                </thead>
+                <tbody>
+                    <?php while ($row = $reservations->fetch_assoc()) { ?>
+                        <tr>
+                            <td><?= $row['room_number']; ?></td>
+                            <td><?= $row['type']; ?></td>
+                            <td>₱<?= number_format($row['price'], 2); ?></td>
+                            <td style="color: <?= $row['status'] == 'confirmed' ? 'green' : 'red'; ?>; font-weight: bold;">
+                                <?= ucfirst($row['status']); ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+            
+        </div>
+
+    </section> 
 </body>
 </html>

@@ -43,23 +43,79 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
             background-color: #f8f9fa;
+            padding: 50px;
+            max-width: 100vw;
+            max-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 125px;
+            background-color: rgba(3, 1, 1, 0.5);
+            color:white;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            z-index: 1000;
+        }
+        nav{
+            position:fixed;
+            left: 125px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .logo-container {
+            background: #FFFFFF;
+            width: 60px;
+            height: 60px;
+            border: 2px solidrgb(13, 13, 14);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+        }
+        body,section{
+            width: 100vw;
             height: 100vh;
-            margin: 0;
+            background: url('/img/background/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
         }
         .login-container {
-            background: white;
+            position: absolute;
+            top: 37%;
+            left: 37%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            color:white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 500px;
             text-align: center;
         }
+         h1 {
+            color: #343a40;
+            padding: 0px;
+            font-size: 24px;
+            font-weight: bold;
+            align-self: center;
+            text-align: center;
+        }
+        p {
+            color:rgb(255, 255, 255);
+            font-size: 28px;
+        }
         h2 {
-            color: #333;
+            color: white;
             margin-bottom: 20px;
         }
         .form-group {
@@ -105,25 +161,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
+ <header>
+        <nav>
+            <div class="logo-container">
+                <h1>XYZ</h1>
+            </div>
+            <p>Hotel Reservations</p>
+        </nav>
+    </header>
+    <section id="content-section">
+         <div class="login-container">
+            <h2>Login</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" placeholder="Enter Username" required>
+                </div>
 
-<div class="login-container">
-    <h2>Login</h2>
-    <form method="post">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" name="username" placeholder="Enter Username" required>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="Enter Password" required>
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <a href="register.php" class="register-link">Don't have an account? Register here</a>
         </div>
-
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" placeholder="Enter Password" required>
-        </div>
-
-        <button type="submit">Login</button>
-    </form>
-
-    <a href="register.php" class="register-link">Don't have an account? Register here</a>
-</div>
+    </section>
+   
 
 </body>
 </html>

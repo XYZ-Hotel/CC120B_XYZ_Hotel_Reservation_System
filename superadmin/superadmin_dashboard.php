@@ -61,6 +61,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'superadmin') {
 <div class="dashboard-container">
     <h2>Welcome to Admin Dashboard</h2>
     <a href="manage_rooms.php" class="btn">🏨 Manage Rooms</a>
+    <a href="generate_report.php" class="btn">📊 Generate Report</a>
     <a href="../users/logout.php" class="btn logout-btn">🚪 Logout</a>
 </div>
 
